@@ -376,7 +376,6 @@ body:not(.is-mobile)
 	min-height: 30px;
 	padding: 0 0 0 30px;
 	font-weight: 400;
-	font-family: "IBM Plex Sans", Arial, sans-serif;
 	text-align: start;
 	border-radius: 4px;
 	overflow: hidden;
