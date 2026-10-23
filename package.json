@@ -1,6 +1,6 @@
 {
 	"name": "overlay",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "A custom theme and extra Markdown elements for Obsidian notes.",
 	"main": "main.js",
 	"type": "module",

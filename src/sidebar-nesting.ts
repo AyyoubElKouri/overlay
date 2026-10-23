@@ -105,7 +105,7 @@ export class SidebarNesting implements PluginFeature {
 
 	private findElements(root: ParentNode, selector: string): HTMLElement[] {
 		return Array.from(root.querySelectorAll(selector)).filter(
-			(element): element is HTMLElement => element instanceof HTMLElement,
+			(element): element is HTMLElement => element.instanceOf(HTMLElement),
 		);
 	}
 
