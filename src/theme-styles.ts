@@ -1,19 +1,21 @@
 import { Plugin } from 'obsidian';
 import type { PluginFeature } from './types';
+import themeCss from '../minimal.css';
 
 const THEME_FILE = 'minimal.css';
 const WATCH_INTERVAL_MS = 1000;
 
 /**
- * Loads the active theme stylesheet from the plugin folder.
+ * Loads the theme stylesheet.
+ *
+ * The stylesheet is bundled into `main.js` for production builds, because
+ * Obsidian only installs `main.js`, `manifest.json`, and `styles.css` from a
+ * release. Development builds read `minimal.css` from the plugin folder and
+ * poll it so CSS edits apply without reloading the plugin.
  *
  * Obsidian injects `styles.css` as an inline style element. Adopting a
- * constructed stylesheet keeps the extra theme file separate without adding
+ * constructed stylesheet keeps the bundled theme separate without adding
  * another style element to the document.
- *
- * The file is polled in development builds so CSS edits apply without
- * reloading the plugin. Production builds skip the poll; the
- * `Reload theme styles` command re-reads the file on demand.
  */
 export class ThemeStyles implements PluginFeature {
 	private readonly plugin: Plugin;
@@ -80,11 +82,19 @@ export class ThemeStyles implements PluginFeature {
 	}
 
 	private async load(force = false): Promise<void> {
+		if (!__DEV__) {
+			this.apply(themeCss);
+			return;
+		}
+
 		const path = this.getStylePath();
 
 		try {
 			const stat = await this.plugin.app.vault.adapter.stat(path);
-			if (!stat) return;
+			if (!stat) {
+				this.apply(themeCss);
+				return;
+			}
 
 			if (
 				!force &&
@@ -96,21 +106,26 @@ export class ThemeStyles implements PluginFeature {
 			}
 
 			const css = await this.plugin.app.vault.adapter.read(path);
-			if (!this.active) return;
-
-			if (this.sheet) {
-				this.sheet.replaceSync(css);
-			} else {
-				const sheet = new CSSStyleSheet();
-				sheet.replaceSync(css);
-				document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
-				this.sheet = sheet;
-			}
+			this.apply(css);
 
 			this.lastMtime = stat.mtime;
 			this.lastSize = stat.size;
 		} catch (error) {
 			console.error(`Overlay: unable to load ${THEME_FILE}`, error);
+			this.apply(themeCss);
+		}
+	}
+
+	private apply(css: string): void {
+		if (!this.active) return;
+
+		if (this.sheet) {
+			this.sheet.replaceSync(css);
+		} else {
+			const sheet = new CSSStyleSheet();
+			sheet.replaceSync(css);
+			document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
+			this.sheet = sheet;
 		}
 	}
 }

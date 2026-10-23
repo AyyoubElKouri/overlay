@@ -166,18 +166,23 @@ and keep `!important` as a last resort.
 
 ## Theme stylesheet
 
-`ThemeStyles` loads `minimal.css` from the plugin folder into a constructed
-stylesheet and adds it to `document.adoptedStyleSheets`. Obsidian keeps its own
-injection of `styles.css`, so the two files stay separate.
+`ThemeStyles` applies `minimal.css` through a constructed stylesheet added to
+`document.adoptedStyleSheets`. Obsidian keeps its own injection of `styles.css`,
+so the two files stay separate.
+
+Production builds bundle `minimal.css` into `main.js`. This is required because
+Obsidian only installs `main.js`, `manifest.json`, and `styles.css` from a
+release; a separate theme file would not reach community-plugin installs.
 
 Builds made with `npm run dev` set the compile-time constant `__DEV__` to
-`true` and poll `minimal.css` once per second, replacing the sheet contents
-when its mtime or size changes. Theme edits then appear without reloading the
-plugin.
+`true` and read `minimal.css` from the plugin folder, polling it once per second
+and replacing the sheet contents when its mtime or size changes. Theme edits
+then appear without reloading the plugin. If the file is missing, the bundled
+stylesheet is used instead.
 
-Builds made with `npm run build` set `__DEV__` to `false`; the poller is
-eliminated from the bundle. The **Reload theme styles** command re-reads the
-file on demand in both builds.
+Builds made with `npm run build` set `__DEV__` to `false`; the poller and file
+read are eliminated from the bundle, and the command re-applies the bundled
+stylesheet.
 
 `styles.css` is injected by Obsidian itself and is not hot-reloaded. TypeScript
 changes always require a plugin reload; use `npm run dev` together with the
