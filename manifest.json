@@ -2,7 +2,7 @@
 	"id": "overlay",
 	"name": "Overlay",
 	"version": "1.0.0",
-	"minAppVersion": "1.0.0",
+	"minAppVersion": "1.4.4",
 	"description": "Custom theme plus extra markdown elements for your notes",
 	"author": "Ayyoub EL KOURI",
 	"isDesktopOnly": false

@@ -1,0 +1,144 @@
+/*
+ * Minimal left sidebar:
+ * - no ribbon
+ * - no sidebar tab bar
+ * The sidebar toggle is added to the file explorer action row by the plugin.
+ */
+body.overlay-clean-sidebar {
+	--ribbon-width: 0px;
+}
+
+body.overlay-clean-sidebar .workspace-ribbon.mod-left,
+body.overlay-clean-sidebar .side-dock-ribbon {
+	display: none;
+}
+
+body.overlay-clean-sidebar
+	.workspace-split.mod-left-split
+	.workspace-tab-header-container {
+	display: none;
+}
+
+/*
+ * Auto-hide main tab bar:
+ * hidden by default, slides down when the pointer reaches the top edge.
+ */
+body.overlay-autohide-tabs
+	.workspace-split.mod-root
+	.workspace-tabs.mod-top
+	> .workspace-tab-header-container {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	z-index: 15;
+	transform: translateY(-100%);
+	opacity: 0;
+	pointer-events: none;
+	transition:
+		transform 180ms cubic-bezier(0.2, 0, 0, 1),
+		opacity 180ms ease;
+	will-change: transform, opacity;
+}
+
+body.overlay-autohide-tabs.overlay-tabs-visible
+	.workspace-split.mod-root
+	.workspace-tabs.mod-top
+	> .workspace-tab-header-container {
+	transform: translateY(0);
+	opacity: 1;
+	pointer-events: auto;
+}
+
+body.overlay-autohide-tabs
+	.workspace-split.mod-root
+	.workspace-tabs.mod-top
+	> .overlay-tabs-hover-zone {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	height: 16px;
+	z-index: 10;
+}
+
+/*
+ * Minimal UI:
+ * - no view header (breadcrumbs, edit/preview toggle, more options)
+ * - status bar hidden until hovered at the bottom-right
+ */
+body.overlay-minimal-ui .workspace-split.mod-root .view-header {
+	display: none;
+}
+
+body.overlay-minimal-ui .status-bar {
+	opacity: 0;
+	transform: translateY(4px);
+	transition:
+		opacity 160ms ease,
+		transform 160ms ease;
+}
+
+body.overlay-minimal-ui .status-bar:hover {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/*
+ * Right markdown zone.
+ *
+ * The scroll containers stay full width so their scrollbars sit at the
+ * window edge. The visible zone is the inner content wrapper:
+ *   - reading mode: .markdown-preview-sizer
+ *   - editing mode: .cm-sizer
+ *
+ * Shared values are exposed as variables so later components can align to
+ * the same layout without duplicating numbers.
+ */
+body {
+	--overlay-markdown-zone-width: 1071px;
+	--overlay-markdown-zone-padding-top: 1cm;
+	--overlay-markdown-zone-padding-inline: 2cm;
+}
+
+.workspace-split.mod-root .markdown-preview-view,
+.workspace-split.mod-root
+	.markdown-source-view.mod-cm6
+	> .cm-editor
+	> .cm-scroller {
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	padding: 0;
+}
+
+.workspace-split.mod-root
+	.markdown-reading-view
+	> .markdown-preview-view
+	> .markdown-preview-sizer,
+.workspace-split.mod-root
+	.markdown-source-view.mod-cm6
+	> .cm-editor
+	> .cm-scroller
+	> .cm-sizer {
+	width: 100%;
+	max-width: var(--overlay-markdown-zone-width);
+	min-height: 100%;
+	margin-inline: auto;
+	padding-top: var(--overlay-markdown-zone-padding-top);
+	padding-right: var(--overlay-markdown-zone-padding-inline);
+	padding-bottom: var(--file-margins-y);
+	padding-left: var(--overlay-markdown-zone-padding-inline);
+	box-sizing: border-box;
+}
+
+.workspace-split.mod-root
+	.markdown-preview-view.is-readable-line-width
+	.markdown-preview-sizer {
+	max-width: var(--overlay-markdown-zone-width);
+}
+
+.workspace-split.mod-root .markdown-source-view.mod-cm6 .cm-content,
+.workspace-split.mod-root .markdown-source-view.mod-cm6 .cm-line {
+	max-width: none;
+}

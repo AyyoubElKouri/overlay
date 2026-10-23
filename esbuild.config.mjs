@@ -34,11 +34,17 @@ const context = await esbuild.context({
 	],
 	format: 'cjs',
 	target: 'es2021',
+	loader: {
+		'.svg': 'text',
+	},
 	logLevel: 'info',
 	sourcemap: prod ? false : 'inline',
 	treeShaking: true,
 	outfile: 'main.js',
 	minify: prod,
+	define: {
+		__DEV__: JSON.stringify(!prod),
+	},
 });
 
 if (prod) {
