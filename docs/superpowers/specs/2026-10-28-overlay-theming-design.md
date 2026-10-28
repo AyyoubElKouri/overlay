@@ -24,11 +24,12 @@ overrides.
 
 ## Theme registry
 
-`src/themes.ts` is the single source of truth. The picker and the generated
+`src/features/theme-picker/themes.ts` is the single source of truth. The picker and the generated
 stylesheet both read from it.
 
 ```ts
-export type ThemeMode = "light" | "dark";
+export const THEME_MODES = ["light", "dark"] as const;
+export type ThemeMode = typeof THEME_MODES[number];
 
 export interface Palette {
 	/** App canvas: space around the note card, sidebar, tab bar. */
@@ -155,7 +156,8 @@ edges only.
 
 - Clicking the light half of a card applies the design and sets Obsidian to
   light mode. Clicking the dark half applies it and sets dark mode.
-- Mode is changed with `app.vault.setConfig("theme", "moonstone" | "obsidian")`.
+- Mode is changed with `app.vault.setConfig("theme", "moonstone" | "obsidian")`:
+  use `"moonstone"` for light mode and `"obsidian"` for dark mode.
   This is the same value Obsidian writes to `appearance.json`; Obsidian updates
   its own state, its Appearance settings UI, and all dependent styles.
 
@@ -228,11 +230,11 @@ it stays readable in every theme, including other community themes.
 
 ```
 src/
-  main.ts          # lifecycle only: load settings, apply theme, register view/command
-  themes.ts        # ThemeMode, Palette, ThemeDesign, THEME_DESIGNS
-  apply-theme.ts   # palette -> CSS text, inject/remove, set body attribute
-  theme-view.ts    # ItemView implementation and card rendering
-  commands.ts      # command registration
+  main.ts                       # plugin lifecycle and feature registration
+  features/
+    theme-picker/
+      index.ts                  # theme feature behavior, view, and lifecycle
+      themes.ts                 # ThemeMode, Palette, ThemeDesign, THEME_DESIGNS
 styles.css         # card rules + picker styles
 ```
 
@@ -275,7 +277,7 @@ DOM/CSS. Verification is:
 
 ## Acceptance criteria
 
-- Four designs, each with light and dark palettes, defined only in `src/themes.ts`.
+- Four designs, each with light and dark palettes, defined only in `src/features/theme-picker/themes.ts`.
 - Switching designs and modes updates the whole app through Obsidian CSS
   variables, with no per-component color overrides beyond the note card.
 - Clicking a card half switches Obsidian's real light/dark mode.

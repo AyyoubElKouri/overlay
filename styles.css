@@ -1,0 +1,216 @@
+/**
+ * Light Theme Tokens
+ * Target: `.theme-light`
+ * What: light-mode appearance variables (colors, shadows, type).
+ */
+.theme-light {
+	--overlay-zone-shadow: rgba(0, 0, 0, 0.22);
+}
+
+/**
+ * Dark Theme Tokens
+ * Target: `.theme-dark`
+ * What: dark-mode appearance variables (colors, shadows, type).
+ */
+.theme-dark {
+	--overlay-zone-shadow: rgba(0, 0, 0, 0.35);
+}
+
+/**
+ * Status Bar (Hidden)
+ * Target: The bottom-right status bar
+ * What: Hides the backlink, word count, character count, and spellcheck items.
+ */
+.status-bar {
+	display: none;
+}
+
+/**
+ * Markdown Zone Variables
+ * Target: Global body (both modes)
+ * What: Sets the note width; `--file-line-width` feeds Obsidian's readable-line rules.
+ */
+body {
+	--overlay-zone-width: 1071px;
+	--file-line-width: var(--overlay-zone-width);
+}
+
+/* Remove the right divider drawn by the left sidebar's primary split handle. */
+.workspace-split.mod-primary-split.mod-left-split > .workspace-leaf-resize-handle {
+	border-inline-end: 0;
+}
+
+/**
+ * Top Bar (Auto-Hide)
+ * Target: Root workspace tabs in Reading & Live Preview
+ * What: Floats the tab bar over the note pane; hover or focus reveals it.
+ */
+.workspace-split.mod-root .workspace-tabs.mod-top {
+	position: relative;
+}
+.workspace-split.mod-root .workspace-tabs.mod-top > .workspace-tab-header-container {
+	position: absolute;
+	inset: 0 0 auto;
+	z-index: 15;
+	opacity: 0;
+	transform: translateY(-4px);
+	transition: opacity 140ms ease, transform 140ms ease;
+}
+.workspace-split.mod-root .workspace-tabs.mod-top > .workspace-tab-header-container:hover,
+.workspace-split.mod-root .workspace-tabs.mod-top > .workspace-tab-header-container:focus-within {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/**
+ * Markdown Scroll Container
+ * Target: `.markdown-preview-view` (Reading) and `.cm-scroller` (Live Preview)
+ * What: Stretches the scroll wrapper to the pane and strips its padding/margins.
+ */
+.markdown-preview-view,
+.view-content > .markdown-source-view.mod-cm6 > .cm-editor > .cm-scroller {
+	max-width: none;
+	margin: 0;
+	padding: 0;
+	scrollbar-gutter: auto;
+}
+
+/**
+ * Markdown Centered Sizer
+ * Target: `.markdown-preview-sizer` (Reading) and `.cm-sizer` (Live Preview)
+ * What: Caps the note at the zone width, centers it, and applies its padding.
+ */
+.markdown-reading-view > .markdown-preview-view > .markdown-preview-sizer,
+.markdown-source-view.mod-cm6 > .cm-editor > .cm-scroller > .cm-sizer {
+	width: calc(100%px);
+	max-width: var(--overlay-zone-width);
+	min-height: 100%;
+	margin-inline: auto;
+	padding: 1cm 2cm var(--file-margins-y);
+	box-sizing: border-box;
+}
+
+/* Keep the canvas around the note distinct from the centered note card. */
+.workspace-leaf-content[data-type="markdown"] .view-content,
+.markdown-preview-view,
+.view-content > .markdown-source-view.mod-cm6 > .cm-editor > .cm-scroller {
+	background-color: var(--overlay-canvas);
+}
+
+/* Give the reading and editing cards a subtle shadow along their side edges. */
+.markdown-reading-view > .markdown-preview-view > .markdown-preview-sizer,
+.markdown-source-view.mod-cm6 > .cm-editor > .cm-scroller > .cm-sizer {
+	background-color: var(--overlay-zone);
+	border-left: 1px solid var(--overlay-zone-border);
+	border-right: 1px solid var(--overlay-zone-border);
+	box-shadow: -5px 0 10px -5px var(--overlay-zone-shadow), 5px 0 10px -5px var(--overlay-zone-shadow);
+}
+
+/* Group the design choices in a compact panel that follows Obsidian's spacing. */
+.overlay-theme-picker {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-2);
+	padding: var(--size-4-2);
+}
+
+.overlay-theme-picker .overlay-theme-picker__card {
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-m);
+	padding: var(--size-4-2);
+	background: var(--background-secondary);
+}
+
+.overlay-theme-picker .overlay-theme-picker__title {
+	margin: 0 0 var(--size-4-2);
+	font-size: var(--font-ui-small);
+}
+
+/* Keep light and dark choices side by side with equal widths. */
+.overlay-theme-picker .overlay-theme-picker__options {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--size-4-2);
+}
+
+.overlay-theme-picker .overlay-theme-picker__options > button.overlay-theme-picker__option {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-rows: 58px auto;
+	align-content: start;
+	align-items: stretch;
+	justify-items: stretch;
+	width: 100%;
+	height: auto;
+	min-height: 0;
+	min-width: 0;
+	max-height: none;
+	padding: var(--size-4-2);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-s);
+	background: var(--background-primary);
+	color: var(--text-normal);
+	cursor: pointer;
+	overflow: hidden;
+	text-align: start;
+}
+
+/* Preserve clear hover, keyboard-focus, and active states on each choice. */
+.overlay-theme-picker .overlay-theme-picker__options > button.overlay-theme-picker__option:hover {
+	background: var(--background-modifier-hover);
+}
+
+.overlay-theme-picker .overlay-theme-picker__options > button.overlay-theme-picker__option:focus-visible {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: 2px;
+}
+
+.overlay-theme-picker .overlay-theme-picker__options > button.overlay-theme-picker__option.is-active {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: -2px;
+}
+
+/* Show each palette as a canvas surrounding the centered note zone. */
+.overlay-theme-picker .overlay-theme-picker__miniature {
+	display: flex;
+	align-items: stretch;
+	justify-content: center;
+	justify-self: stretch;
+	align-self: stretch;
+	width: 100%;
+	min-width: 0;
+	height: 58px;
+	min-height: 0;
+	padding: 0;
+	box-sizing: border-box;
+	border-radius: var(--radius-s);
+}
+
+.overlay-theme-picker .overlay-theme-picker__zone {
+	display: block;
+	width: 58%;
+	height: 100%;
+	min-height: 0;
+	box-sizing: border-box;
+	border-left: 1px solid;
+	border-right: 1px solid;
+}
+
+/* Keep the mode label and active check aligned beneath the preview. */
+.overlay-theme-picker .overlay-theme-picker__caption {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--size-4-1);
+	margin-top: var(--size-4-1);
+	min-height: 20px;
+	font-size: var(--font-ui-smaller);
+}
+
+.overlay-theme-picker .overlay-theme-picker__check {
+	color: var(--interactive-accent);
+}
+
+.overlay-theme-picker .overlay-theme-picker__option:not(.is-active) .overlay-theme-picker__check {
+	visibility: hidden;
+}
