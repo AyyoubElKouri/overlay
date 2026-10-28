@@ -1,9 +1,11 @@
 import { Plugin } from 'obsidian';
+import { registerFileIconsFeature } from './features/file-icons';
 import { openThemePicker, registerThemePickerFeature } from './features/theme-picker';
 
 export default class OverlayPlugin extends Plugin {
 	async onload(): Promise<void> {
 		this.setHeaderAndRibbonVisibility(false);
+		registerFileIconsFeature(this);
 		await registerThemePickerFeature(this);
 	}
 

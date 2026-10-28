@@ -41,6 +41,15 @@ body {
 }
 
 /**
+ * File Explorer Selection
+ * Target: File rows in the left sidebar's file explorer
+ * What: Tightens the highlight radius to 4px for hover, focus, and selection.
+ */
+.nav-files-container .nav-file-title {
+	--nav-item-radius: 4px;
+}
+
+/**
  * Top Bar (Auto-Hide)
  * Target: Root workspace tabs in Reading & Live Preview
  * What: Floats the tab bar over the note pane; hover or focus reveals it.
