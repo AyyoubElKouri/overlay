@@ -115,6 +115,113 @@ body {
 	box-shadow: -5px 0 10px -5px var(--overlay-zone-shadow), 5px 0 10px -5px var(--overlay-zone-shadow);
 }
 
+/**
+ * Note Heading Sizes
+ * Target: H1 in Reading view and Live Preview
+ * What: enlarges H1 to 30px while leaving H2–H6 at their default sizes.
+ */
+.markdown-preview-view,
+.markdown-source-view {
+	--h1-size: 30px;
+}
+
+/**
+ * Note Headings
+ * Target: H1–H6 in Reading view and Live Preview
+ * What: uses regular weight and italics instead of bold.
+ */
+.markdown-preview-view h1,
+.markdown-preview-view h2,
+.markdown-preview-view h3,
+.markdown-preview-view h4,
+.markdown-preview-view h5,
+.markdown-preview-view h6,
+.markdown-source-view .cm-header {
+	font-weight: var(--font-normal);
+	font-style: italic;
+}
+
+/**
+ * H1 Full-Width Underline
+ * Target: H1 in Reading view and Live Preview
+ * What: draws a light 0.5px rule across the full note width.
+ */
+.markdown-preview-view h1,
+.markdown-source-view .HyperMD-header-1 {
+	padding-bottom: 0;
+	border-bottom: 0.5px solid var(--background-modifier-border);
+}
+
+/**
+ * H2 Full-Width Underline
+ * Target: H2 in Reading view and Live Preview
+ * What: draws a fainter 0.5px rule so H2 stays visually below H1.
+ */
+.markdown-preview-view h2,
+.markdown-source-view .HyperMD-header-2 {
+	padding-bottom: 0;
+	border-bottom: 0.5px solid color-mix(in srgb, var(--background-modifier-border) 55%, transparent);
+}
+
+/**
+ * H3 Title-Width Underline
+ * Target: H3 in Reading view and Live Preview
+ * What: underlines only the heading text, at the faintest level of the hierarchy.
+ */
+.markdown-preview-view h3,
+.markdown-source-view .HyperMD-header-3 {
+	text-decoration-line: underline;
+	text-decoration-thickness: 1px;
+	text-decoration-color: color-mix(in srgb, var(--background-modifier-border) 80%, transparent);
+	text-underline-offset: 0.3em;
+}
+
+/**
+ * Checklist Checkboxes
+ * Target: Task checkboxes in Reading view and Live Preview
+ * What: enlarges the box and gives it the note background with a light border.
+ */
+.markdown-preview-view .task-list-item-checkbox,
+.markdown-source-view .task-list-item-checkbox {
+	--checkbox-size: 22px;
+	width: 22px;
+	height: 22px;
+	vertical-align: middle;
+	background-color: var(--overlay-canvas);
+	border-color: var(--background-modifier-border);
+}
+
+/* Keep Reading view's checkbox-centered line spacing as tight as Live Preview. */
+.markdown-preview-view .task-list-item-checkbox {
+	top: 0;
+}
+
+/**
+ * Checked Checkbox Icon
+ * Target: Checked task checkboxes in Reading view and Live Preview
+ * What: removes the accent fill and shows only the provided check glyph.
+ */
+.markdown-preview-view .task-list-item-checkbox:checked,
+.markdown-source-view .task-list-item-checkbox:checked,
+.markdown-preview-view .task-list-item-checkbox:checked:hover,
+.markdown-source-view .task-list-item-checkbox:checked:hover {
+	background-color: var(--overlay-canvas);
+	border-color: var(--background-modifier-border);
+}
+
+.markdown-preview-view .task-list-item-checkbox:checked::after,
+.markdown-source-view .task-list-item-checkbox:checked::after {
+	-webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxNCAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyLjI0MjcgMC4wOTQ2MDQxQzEyLjM5OCAwLjAwNjU5MTYzIDEyLjU4MzUgLTAuMDIxNDA2IDEyLjc2MDMgMC4wMTY0ODUxQzEyLjkzNzEgMC4wNTQzNzYzIDEzLjA5MTQgMC4xNTUyMTEgMTMuMTkwOSAwLjI5NzgzNUwxMy44ODUzIDEuMjk0MTlDMTMuOTc2IDEuNDI0NDEgMTQuMDE0OCAxLjU4MDYxIDEzLjk5NDkgMS43MzUxN0MxMy45NzUgMS44ODk3MyAxMy44OTc3IDIuMDMyNyAxMy43NzY2IDIuMTM4NzlMMTMuNzc0NCAyLjE0MTQzTDEzLjc2NDYgMi4xNUwxMy43MjQ3IDIuMTg0OThMMTMuNTY2OCAyLjMyNjg0QzEyLjY5MzYgMy4xMjM2NiAxMS44NDY5IDMuOTQ1NzggMTEuMDI3OSA0Ljc5MkM5LjQ4Njk4IDYuMzg2MTggNy42NTcxIDguNDcyNTkgNi40MjU1IDEwLjQ5N0M2LjA4MTgzIDExLjA2MTggNS4yNDIyOSAxMS4xODMyIDQuNzQ0MzIgMTAuNjk1NkwwLjE5NTkzNiA2LjI0OTU5QzAuMTMwNzU1IDYuMTg1ODUgMC4wNzk4NTkyIDYuMTEwNDMgMC4wNDYyNzU1IDYuMDI3ODJDMC4wMTI2OTE3IDUuOTQ1MjEgLTAuMDAyODk0OTIgNS44NTcwOSAwLjAwMDQ0MTk0MSA1Ljc2ODY5QzAuMDAzNzc4ODEgNS42ODAzIDAuMDI1OTcxMSA1LjU5MzQ0IDAuMDY1Njk5NyA1LjUxMzI4QzAuMTA1NDI4IDUuNDMzMTIgMC4xNjE4ODIgNS4zNjEyOSAwLjIzMTcwNiA1LjMwMjA2TDEuNjA2MzkgNC4xMzU0NkMxLjcyNzE5IDQuMDMzIDEuODgyMSAzLjk3MzIyIDIuMDQ0NTkgMy45NjYzNkMyLjIwNzA4IDMuOTU5NDkgMi4zNjcwNSA0LjAwNTk4IDIuNDk3MTMgNC4wOTc4NUw0LjgxNzk2IDUuNzM0OTFDOC40NDI2NCAyLjM3MTcxIDEwLjQ5OTEgMS4wODEwNiAxMi4yNDI3IDAuMDk0NjA0MVoiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBmaWxsPSIjRUZFRkVGIi8+Cjwvc3ZnPg==");
+	mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAxNCAxMSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyLjI0MjcgMC4wOTQ2MDQxQzEyLjM5OCAwLjAwNjU5MTYzIDEyLjU4MzUgLTAuMDIxNDA2IDEyLjc2MDMgMC4wMTY0ODUxQzEyLjkzNzEgMC4wNTQzNzYzIDEzLjA5MTQgMC4xNTUyMTEgMTMuMTkwOSAwLjI5NzgzNUwxMy44ODUzIDEuMjk0MTlDMTMuOTc2IDEuNDI0NDEgMTQuMDE0OCAxLjU4MDYxIDEzLjk5NDkgMS43MzUxN0MxMy45NzUgMS44ODk3MyAxMy44OTc3IDIuMDMyNyAxMy43NzY2IDIuMTM4NzlMMTMuNzc0NCAyLjE0MTQzTDEzLjc2NDYgMi4xNUwxMy43MjQ3IDIuMTg0OThMMTMuNTY2OCAyLjMyNjg0QzEyLjY5MzYgMy4xMjM2NiAxMS44NDY5IDMuOTQ1NzggMTEuMDI3OSA0Ljc5MkM5LjQ4Njk4IDYuMzg2MTggNy42NTcxIDguNDcyNTkgNi40MjU1IDEwLjQ5N0M2LjA4MTgzIDExLjA2MTggNS4yNDIyOSAxMS4xODMyIDQuNzQ0MzIgMTAuNjk1NkwwLjE5NTkzNiA2LjI0OTU5QzAuMTMwNzU1IDYuMTg1ODUgMC4wNzk4NTkyIDYuMTEwNDMgMC4wNDYyNzU1IDYuMDI3ODJDMC4wMTI2OTE3IDUuOTQ1MjEgLTAuMDAyODk0OTIgNS44NTcwOSAwLjAwMDQ0MTk0MSA1Ljc2ODY5QzAuMDAzNzc4ODEgNS42ODAzIDAuMDI1OTcxMSA1LjU5MzQ0IDAuMDY1Njk5NyA1LjUxMzI4QzAuMTA1NDI4IDUuNDMzMTIgMC4xNjE4ODIgNS4zNjEyOSAwLjIzMTcwNiA1LjMwMjA2TDEuNjA2MzkgNC4xMzU0NkMxLjcyNzE5IDQuMDMzIDEuODgyMSAzLjk3MzIyIDIuMDQ0NTkgMy45NjYzNkMyLjIwNzA4IDMuOTU5NDkgMi4zNjcwNSA0LjAwNTk4IDIuNDk3MTMgNC4wOTc4NUw0LjgxNzk2IDUuNzM0OTFDOC40NDI2NCAyLjM3MTcxIDEwLjQ5OTEgMS4wODEwNiAxMi4yNDI3IDAuMDk0NjA0MVoiIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBmaWxsPSIjRUZFRkVGIi8+Cjwvc3ZnPg==");
+	-webkit-mask-position: center;
+	mask-position: center;
+	-webkit-mask-size: 14px 11px;
+	mask-size: 14px 11px;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	background-color: var(--text-normal);
+}
+
 /* Group the design choices in a compact panel that follows Obsidian's spacing. */
 .overlay-theme-picker {
 	display: flex;

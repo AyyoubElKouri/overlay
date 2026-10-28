@@ -4,7 +4,7 @@ import { openThemePicker, registerThemePickerFeature } from './features/theme-pi
 
 export default class OverlayPlugin extends Plugin {
 	async onload(): Promise<void> {
-		this.setHeaderAndRibbonVisibility(false);
+		this.setChromeVisibility(false);
 		registerFileIconsFeature(this);
 		await registerThemePickerFeature(this);
 	}
@@ -14,14 +14,18 @@ export default class OverlayPlugin extends Plugin {
 	}
 
 	onunload(): void {
-		this.setHeaderAndRibbonVisibility(true);
+		this.setChromeVisibility(true);
 	}
 
-	private setHeaderAndRibbonVisibility(isVisible: boolean): void {
+	private setChromeVisibility(isVisible: boolean): void {
 		const vault = this.app.vault as unknown as {
-			setConfig: (key: "showViewHeader" | "showRibbon", value: boolean) => void;
+			setConfig: (
+				key: "showViewHeader" | "showRibbon" | "showInlineTitle",
+				value: boolean,
+			) => void;
 		};
 		vault.setConfig("showViewHeader", isVisible);
 		vault.setConfig("showRibbon", isVisible);
+		vault.setConfig("showInlineTitle", isVisible);
 	}
 }

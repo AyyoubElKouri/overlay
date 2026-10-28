@@ -21,6 +21,8 @@ const themeCss = [
 	--background-primary: var(--overlay-zone);
 	--background-secondary: var(--overlay-canvas);
 	--background-secondary-alt: var(--overlay-canvas);
+	--code-background: var(--overlay-canvas);
+	--code-radius: 8px;
 	--background-modifier-border: var(--overlay-zone-border);
 	--background-modifier-border-hover: var(--overlay-zone-border);
 	--background-modifier-border-focus: var(--overlay-zone-border);
