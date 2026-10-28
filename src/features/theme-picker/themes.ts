@@ -26,19 +26,19 @@ export const THEME_DESIGNS: readonly ThemeDesign[] = [
 	{
 		id: "sage",
 		name: "Sage",
-		light: { background: "#ebefe9", zone: "#f6f8f5", border: "#e0ded6" },
+		light: { background: "#e3ebdd", zone: "#f2f7ef", border: "#cfd9c9" },
 		dark: { background: "#14160f", zone: "#1c1f16", border: "#2d2d2d" },
 	},
 	{
 		id: "tide",
 		name: "Tide",
-		light: { background: "#ebf0f5", zone: "#f6f9fc", border: "#e0ded6" },
+		light: { background: "#ddeaf5", zone: "#f0f6fc", border: "#c8d7e5" },
 		dark: { background: "#0f1613", zone: "#161f1c", border: "#2d2d2d" },
 	},
 	{
 		id: "slate",
 		name: "Slate",
-		light: { background: "#eaecee", zone: "#f5f7f8", border: "#e0ded6" },
+		light: { background: "#e4e3ed", zone: "#f3f2f8", border: "#d1cfde" },
 		dark: { background: "#140f16", zone: "#1c161f", border: "#2d2d2d" },
 	},
 ];

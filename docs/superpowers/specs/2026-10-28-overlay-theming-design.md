@@ -60,11 +60,11 @@ Light/dark pairs are matched by color family.
 | ----------- | --------- | ----- | ---------- | --------- | --------- |
 | `parchment` | Parchment | light | `#F4F1EA`  | `#FBFAF5` | `#E0DED6` |
 | `parchment` | Parchment | dark  | `#16150F`  | `#1F1D16` | `#2D2D2D` |
-| `sage`      | Sage      | light | `#EBEFE9`  | `#F6F8F5` | `#E0DED6` |
+| `sage`      | Sage      | light | `#E3EBDD`  | `#F2F7EF` | `#CFD9C9` |
 | `sage`      | Sage      | dark  | `#14160F`  | `#1C1F16` | `#2D2D2D` |
-| `tide`      | Tide      | light | `#EBF0F5`  | `#F6F9FC` | `#E0DED6` |
+| `tide`      | Tide      | light | `#DDEAF5`  | `#F0F6FC` | `#C8D7E5` |
 | `tide`      | Tide      | dark  | `#0F1613`  | `#161F1C` | `#2D2D2D` |
-| `slate`     | Slate     | light | `#EAECEE`  | `#F5F7F8` | `#E0DED6` |
+| `slate`     | Slate     | light | `#E4E3ED`  | `#F3F2F8` | `#D1CFDE` |
 | `slate`     | Slate     | dark  | `#140F16`  | `#1C161F` | `#2D2D2D` |
 
 Default design: `parchment`.
