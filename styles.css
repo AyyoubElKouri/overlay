@@ -330,3 +330,212 @@ body {
 .overlay-theme-picker .overlay-theme-picker__option:not(.is-active) .overlay-theme-picker__check {
 	visibility: hidden;
 }
+
+/**
+ * Inline Icon Box
+ * Target: Rendered icon-syntax tokens in Reading view and Live Preview
+ * What: matches the checklist checkbox and centers a 14px glyph.
+ */
+.overlay-icon-box {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 22px;
+	height: 22px;
+	padding: 0;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-s);
+	background-color: var(--overlay-canvas);
+	color: var(--text-normal);
+	vertical-align: middle;
+	cursor: pointer;
+	flex-shrink: 0;
+}
+
+/**
+ * Icon Box Label Gap
+ * Target: Rendered icon-syntax tokens in Reading view and Live Preview
+ * What: a checklist checkbox leaves 8px before its text in Reading view and 3.33px in
+ * Live Preview (0.25em of the 13.33px editor font); the icon box is followed by a plain
+ * space instead, so the difference is added explicitly per view.
+ */
+.markdown-preview-view .overlay-icon-box {
+	margin-inline-end: 4px;
+}
+
+.markdown-source-view.mod-cm6 .overlay-icon-box {
+	margin-inline-end: 3.33px;
+}
+
+/**
+ * Icon Box Alignment
+ * Target: Icons that start a Reading-view list item or paragraph
+ * What: reproduces the checkbox offset so both boxes share a left edge and row rhythm.
+ * The checkbox is outdented by 1.5 x its 22px size; a paragraph additionally
+ * starts 3ch inside the list item, so its icon compensates for that shift.
+ */
+.markdown-preview-view li:has(> .overlay-icon-box) > .overlay-icon-box,
+.markdown-preview-view li:has(> p > .overlay-icon-box) > p > .overlay-icon-box {
+	margin-inline-start: calc(22px * -1.5);
+}
+
+.markdown-preview-view li > p:has(> .overlay-icon-box) > .overlay-icon-box,
+.markdown-preview-view p:has(> .overlay-icon-box):not(li > p) > .overlay-icon-box {
+	margin-inline-start: calc(3ch - 22px * 1.5);
+}
+
+/**
+ * Icon Box Row Rhythm (Reading)
+ * Target: Paragraphs that hold icon lines, outside list items
+ * What: a checklist row is about 1.8 lines tall (22px box plus breathing room); icon
+ * lines in a plain paragraph otherwise collapse to the text line height and look tighter.
+ */
+.markdown-preview-view p:has(> .overlay-icon-box):not(li > p) {
+	line-height: calc(22px + 0.3em);
+}
+
+/**
+ * Icon Box Alignment (Live Preview)
+ * Target: Icons that start a Live Preview list item or paragraph
+ * What: reproduces the task checkbox's outdent and baseline shift.
+ * A list checkbox sits 0.9em inside the list marker and a paragraph checkbox
+ * 0.458em outside the text column; both are lifted 0.1em.
+ */
+.markdown-source-view.mod-cm6 .cm-line.overlay-icon-line > .overlay-icon-box {
+	position: relative;
+}
+
+.markdown-source-view.mod-cm6 .cm-line.overlay-icon-line.HyperMD-list-line > .overlay-icon-box {
+	top: -0.08333em;
+	margin-inline-start: -0.9em;
+}
+
+.markdown-source-view.mod-cm6 .cm-line.overlay-icon-line:not(.HyperMD-list-line) > .overlay-icon-box {
+	margin-inline-start: 0.458em;
+}
+
+/* Give plain icon lines the checklist row height so their pitch matches. */
+.markdown-source-view.mod-cm6 .cm-line.overlay-icon-line:not(.HyperMD-list-line) {
+	min-height: calc(22px + 0.3em);
+}
+
+.overlay-icon-box:hover {
+	border-color: var(--background-modifier-border-hover);
+}
+
+.overlay-icon-box:focus-visible {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: 1px;
+}
+
+.overlay-icon-box .svg-icon {
+	width: 14px;
+	height: 14px;
+	stroke-width: var(--icon-s-stroke-width);
+}
+
+/**
+ * Icon Picker
+ * Target: The icon-syntax picker modal
+ * What: searchable paginated grid using the inline box visual.
+ */
+.overlay-icon-picker .overlay-icon-picker__search {
+	width: 100%;
+	margin-block-end: var(--size-4-3);
+	background-color: var(--overlay-canvas);
+	border: 1px solid var(--background-modifier-border);
+	box-shadow: none;
+	color: var(--text-normal);
+}
+
+.overlay-icon-picker .overlay-icon-picker__search:focus {
+	border-color: var(--background-modifier-border-hover);
+	box-shadow: none;
+}
+
+.overlay-icon-picker__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+	gap: var(--size-4-1);
+	max-height: 55vh;
+	overflow-y: auto;
+	padding-block-end: var(--size-4-2);
+}
+
+.overlay-icon-picker .overlay-icon-picker__tile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--size-4-1);
+	padding: var(--size-4-1);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-s);
+	background-color: var(--overlay-canvas);
+	box-shadow: none;
+	color: var(--text-normal);
+	cursor: pointer;
+	min-width: 0;
+	height: auto;
+	min-height: 32px;
+}
+
+.overlay-icon-picker .overlay-icon-picker__tile:hover {
+	background-color: var(--overlay-canvas);
+	border-color: var(--background-modifier-border-hover);
+}
+
+.overlay-icon-picker .overlay-icon-picker__tile.is-active {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: -2px;
+}
+
+.overlay-icon-picker__glyph {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	flex: 0 0 auto;
+	border: none;
+	border-radius: var(--radius-s);
+	background-color: transparent;
+	color: var(--text-normal);
+}
+
+.overlay-icon-picker__glyph .svg-icon {
+	width: 14px;
+	height: 14px;
+}
+
+.overlay-icon-picker__empty {
+	padding: var(--size-4-4);
+	text-align: center;
+	color: var(--text-muted);
+}
+
+.overlay-icon-picker__footer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--size-4-2);
+	margin-block-start: var(--size-4-3);
+}
+
+.overlay-icon-picker .overlay-icon-picker__footer button {
+	background-color: var(--overlay-canvas);
+	border: 1px solid var(--background-modifier-border);
+	box-shadow: none;
+	color: var(--text-normal);
+}
+
+.overlay-icon-picker .overlay-icon-picker__footer button:hover:not(:disabled) {
+	background-color: var(--overlay-canvas);
+	border-color: var(--background-modifier-border-hover);
+}
+
+.overlay-icon-picker .overlay-icon-picker__footer button:disabled {
+	background-color: var(--overlay-canvas);
+	border-color: var(--background-modifier-border);
+	opacity: 0.5;
+}

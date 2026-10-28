@@ -2,6 +2,16 @@
 
 Overlay is an Obsidian plugin for a custom theme and extra Markdown elements in your notes.
 
+## Inline icons
+
+Write `%"icon-name"%` in a note to render an icon inside a box that matches the
+checklist checkbox. Click the box to open the icon picker, search by name, and
+choose a replacement; the note is updated automatically.
+
+Icons available in the picker come from the running Obsidian version. Unknown
+names render `help-circle` and stay clickable. The syntax is ignored inside
+code, math, and frontmatter.
+
 ## Development
 
 - Install dependencies with `npm install`.
