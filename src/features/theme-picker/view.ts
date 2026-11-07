@@ -3,8 +3,14 @@ import { THEME_DESIGNS, THEME_MODES, type ThemeMode } from "./themes";
 
 const VIEW_TYPE = "overlay-theme-picker";
 
+export interface ThemePickerActions {
+	applySelection: (id: string, mode: ThemeMode) => Promise<void>;
+	getItalicHeadings: () => boolean;
+	setItalicHeadings: (enabled: boolean) => Promise<void>;
+}
+
 export class ThemePickerView extends ItemView {
-	constructor(leaf: WorkspaceLeaf, private readonly applySelection: (id: string, mode: ThemeMode) => Promise<void>) {
+	constructor(leaf: WorkspaceLeaf, private readonly actions: ThemePickerActions) {
 		super(leaf);
 	}
 
@@ -27,6 +33,20 @@ export class ThemePickerView extends ItemView {
 		container.empty();
 		container.addClass("overlay-theme-picker");
 
+		// Typography applies to every design and mode, so keep it above the palette cards.
+		const typography = container.createDiv({ cls: "overlay-theme-picker__card" });
+		typography.createEl("h3", { text: "Typography", cls: "overlay-theme-picker__title" });
+		const row = typography.createEl("label", { cls: "overlay-theme-picker__toggle-row" });
+		row.createSpan({ text: "Italic headings" });
+		const toggle = row.createDiv({ cls: "checkbox-container" });
+		const input = toggle.createEl("input", { attr: { type: "checkbox" } });
+		input.checked = this.actions.getItalicHeadings();
+		toggle.toggleClass("is-enabled", input.checked);
+		input.addEventListener("change", () => {
+			toggle.toggleClass("is-enabled", input.checked);
+			void this.actions.setItalicHeadings(input.checked);
+		});
+
 		for (const design of THEME_DESIGNS) {
 			// Keep each design's light and dark choices together for easy comparison.
 			const card = container.createDiv({ cls: "overlay-theme-picker__card" });
@@ -45,7 +65,7 @@ export class ThemePickerView extends ItemView {
 						"aria-label": `Apply ${design.name} ${mode} theme`,
 					},
 				});
-				button.addEventListener("click", () => { void this.applySelection(design.id, mode); });
+				button.addEventListener("click", () => { void this.actions.applySelection(design.id, mode); });
 
 				// Mirror the app canvas, centered note zone, and its side borders in miniature.
 				const preview = button.createSpan({ cls: "overlay-theme-picker__miniature" });

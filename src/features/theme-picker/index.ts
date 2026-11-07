@@ -83,17 +83,34 @@ export function openThemePicker(workspace: Workspace): Promise<void> {
 	return opening;
 }
 
+interface OverlayData {
+	themeId?: string;
+	italicHeadings?: boolean;
+}
+
 // Register picker UI, persistence, events, and per-window theme cleanup.
 export async function registerThemePickerFeature(plugin: Plugin): Promise<void> {
-	const saved = await plugin.loadData() as { themeId?: string } | null;
+	const saved = await plugin.loadData() as OverlayData | null;
 	let themeId = getThemeDesign(saved?.themeId ?? "parchment").id;
+	// Italics stay on by default so existing notes keep their current heading style.
+	let italicHeadings = saved?.italicHeadings ?? true;
 	// Track pop-out documents so their injected CSS is removed on close or unload.
 	const documents = new Set<Document>();
+
+	// Mirror the typography flag onto the body so styles.css can switch italics off.
+	function applyItalicHeadings(doc: Document): void {
+		if (doc.body) doc.body.dataset.overlayItalicHeadings = String(italicHeadings);
+	}
 
 	// Remember each styled document so its theme can be cleaned up later.
 	function applyToWindow(doc: Document): void {
 		applyTheme(doc, themeId);
+		applyItalicHeadings(doc);
 		documents.add(doc);
+	}
+
+	function saveSettings(): Promise<void> {
+		return plugin.saveData({ themeId, italicHeadings });
 	}
 
 	async function selectTheme(id: string, mode: ThemeMode): Promise<void> {
@@ -105,8 +122,14 @@ export async function registerThemePickerFeature(plugin: Plugin): Promise<void> 
 			setConfig: (key: "theme", value: "obsidian" | "moonstone") => void;
 		};
 		vault.setConfig("theme", mode === "dark" ? "obsidian" : "moonstone");
-		await plugin.saveData({ themeId });
+		await saveSettings();
 		refreshPicker();
+	}
+
+	async function setItalicHeadings(enabled: boolean): Promise<void> {
+		italicHeadings = enabled;
+		documents.forEach(applyItalicHeadings);
+		await saveSettings();
 	}
 
 	function refreshPicker(): void {
@@ -116,7 +139,11 @@ export async function registerThemePickerFeature(plugin: Plugin): Promise<void> 
 		}
 	}
 
-	plugin.registerView(VIEW_TYPE, (leaf) => new ThemePickerView(leaf, selectTheme));
+	plugin.registerView(VIEW_TYPE, (leaf) => new ThemePickerView(leaf, {
+		applySelection: selectTheme,
+		getItalicHeadings: () => italicHeadings,
+		setItalicHeadings,
+	}));
 	// Apply the current palette to new pop-outs and release their documents when they close.
 	plugin.registerEvent(plugin.app.workspace.on("window-open", (_workspaceWindow, window) => applyToWindow(window.document)));
 	plugin.registerEvent(plugin.app.workspace.on("window-close", (_workspaceWindow, window) => {

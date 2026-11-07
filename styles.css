@@ -128,7 +128,7 @@ body {
 /**
  * Note Headings
  * Target: H1–H6 in Reading view and Live Preview
- * What: uses regular weight and italics instead of bold.
+ * What: uses regular weight instead of bold, with italics toggled in the Themes view.
  */
 .markdown-preview-view h1,
 .markdown-preview-view h2,
@@ -138,6 +138,15 @@ body {
 .markdown-preview-view h6,
 .markdown-source-view .cm-header {
 	font-weight: var(--font-normal);
+}
+
+body:not([data-overlay-italic-headings="false"]) .markdown-preview-view h1,
+body:not([data-overlay-italic-headings="false"]) .markdown-preview-view h2,
+body:not([data-overlay-italic-headings="false"]) .markdown-preview-view h3,
+body:not([data-overlay-italic-headings="false"]) .markdown-preview-view h4,
+body:not([data-overlay-italic-headings="false"]) .markdown-preview-view h5,
+body:not([data-overlay-italic-headings="false"]) .markdown-preview-view h6,
+body:not([data-overlay-italic-headings="false"]) .markdown-source-view .cm-header {
 	font-style: italic;
 }
 
@@ -240,6 +249,15 @@ body {
 .overlay-theme-picker .overlay-theme-picker__title {
 	margin: 0 0 var(--size-4-2);
 	font-size: var(--font-ui-small);
+}
+
+/* Keep the typography label and its switch on one clickable row. */
+.overlay-theme-picker .overlay-theme-picker__toggle-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--size-4-2);
+	cursor: pointer;
 }
 
 /* Keep light and dark choices side by side with equal widths. */
